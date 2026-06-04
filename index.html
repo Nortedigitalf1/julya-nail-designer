@@ -1146,6 +1146,32 @@
             }
         }
 
+        /* CAMPOS DO MODAL COMBO (fundo claro) */
+        .combo-fields .field label {
+            color: var(--gray-3);
+        }
+
+        .combo-fields .field input,
+        .combo-fields .field select,
+        .combo-fields .field textarea {
+            color: var(--ink);
+            border-bottom-color: rgba(196, 152, 74, 0.35);
+        }
+
+        .combo-fields .field input::placeholder {
+            color: var(--gray-2);
+        }
+
+        .combo-fields .field input:focus,
+        .combo-fields .field select:focus {
+            border-bottom-color: var(--gold);
+        }
+
+        .combo-fields .field.is-ok input,
+        .combo-fields .field.is-ok select {
+            border-bottom-color: var(--gold);
+        }
+
         /* ANIMAÇÕES */
         @keyframes marquee {
             from { transform: translateX(0); }
