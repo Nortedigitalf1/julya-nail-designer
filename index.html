@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>Julya Nail Designer | Estúdio de Luxo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <title>Julya Nail Designer | Estúdio de Luxo – Jaboatão dos Guararapes</title>
+    <meta name="description" content="Estúdio de nail design exclusivo em Jaboatão dos Guararapes. Alongamento, banho de gel, spa dos pés e muito mais. Agendamento via WhatsApp.">
+    <meta property="og:title" content="Julya Nail Designer | Estúdio de Luxo">
+    <meta property="og:description" content="Unhas perfeitas com atendimento exclusivo e personalizado em Jaboatão dos Guararapes - PE.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="theme-color" content="#c4984a">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap&font-display=swap" rel="stylesheet">
     <style>
         :root {
             --skin-1: #f5ede6;
@@ -74,6 +80,30 @@
             color: var(--ink);
             text-decoration: none;
             font-weight: 400;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 24px;
+            align-items: center;
+        }
+
+        @media (min-width: 600px) {
+            .nav-links { display: flex; }
+        }
+
+        .nav-link {
+            font-size: 0.58rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-3);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 400;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: var(--gold);
         }
 
         .nav-cta {
@@ -636,8 +666,8 @@
         }
 
         .field textarea {
-            resize: none;
-            min-height: 72px;
+            resize: vertical;
+            min-height: 110px;
         }
 
         .field-row {
@@ -1146,6 +1176,41 @@
             }
         }
 
+        /* SERVIÇOS TAGS CHIPS */
+        .service-checks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .svc-chip {
+            padding: 7px 14px;
+            border: 1px solid rgba(196, 152, 74, 0.35);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+            color: rgba(255,255,255,0.55);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.18s;
+            white-space: nowrap;
+        }
+
+        .svc-chip.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        @media (hover: hover) {
+            .svc-chip:not(.active):hover {
+                border-color: rgba(196, 152, 74, 0.7);
+                color: rgba(255,255,255,0.85);
+            }
+        }
+
         /* CAMPOS DO MODAL COMBO (fundo claro) */
         .combo-fields .field label {
             color: var(--gray-3);
@@ -1252,6 +1317,10 @@
 
 <nav id="navbar">
     <a href="#" class="nav-logo">JND</a>
+    <div class="nav-links">
+        <a href="#sobre" class="nav-link" data-section="sobre">Sobre</a>
+        <a href="#servicos" class="nav-link" data-section="servicos">Serviços</a>
+    </div>
     <a href="#form" class="nav-cta">Agendar</a>
 </nav>
 
@@ -1304,10 +1373,10 @@
 
 <!-- HIGHLIGHTS -->
 <div class="highlights">
-    <div class="highlight-card reveal"><div class="hl-num">9+</div><div class="hl-label">Serviços<br>Exclusivos</div></div>
+    <div class="highlight-card reveal"><div class="hl-num">11+</div><div class="hl-label">Serviços<br>Exclusivos</div></div>
     <div class="highlight-card reveal"><div class="hl-num">100%</div><div class="hl-label">Produtos<br>Premium</div></div>
     <div class="highlight-card reveal"><div class="hl-num">15d</div><div class="hl-label">Durabilidade<br>Garantida</div></div>
-    <div class="highlight-card reveal"><div class="hl-num">★★★</div><div class="hl-label">Atendimento<br>Luxo</div></div>
+    <div class="highlight-card reveal"><div class="hl-num">5★</div><div class="hl-label">Atendimento<br>Exclusivo</div></div>
 </div>
 
 <!-- AGENDAMENTO -->
@@ -1330,11 +1399,9 @@
                 <div class="field-err">Informe um telefone válido.</div>
             </div>
             <div class="field reveal" id="f-service">
-                <label>Serviço Desejado</label>
-                <select id="service">
-                    <option value="">Selecione um serviço</option>
-                </select>
-                <div class="field-err">Selecione um serviço.</div>
+                <label>Serviços Desejados <span style="opacity:.5;font-size:.5rem;letter-spacing:1px">(selecione um ou mais)</span></label>
+                <div class="service-checks" id="serviceChecks"></div>
+                <div class="field-err">Selecione ao menos um serviço.</div>
             </div>
             <div class="field-row">
                 <div class="field reveal" id="f-date">
@@ -1344,7 +1411,19 @@
                 </div>
                 <div class="field reveal" id="f-time">
                     <label>Horário</label>
-                    <input type="time" id="time">
+                    <select id="time">
+                        <option value="">Selecione</option>
+                        <option>09:00</option><option>09:30</option>
+                        <option>10:00</option><option>10:30</option>
+                        <option>11:00</option><option>11:30</option>
+                        <option>12:00</option><option>12:30</option>
+                        <option>13:00</option><option>13:30</option>
+                        <option>14:00</option><option>14:30</option>
+                        <option>15:00</option><option>15:30</option>
+                        <option>16:00</option><option>16:30</option>
+                        <option>17:00</option><option>17:30</option>
+                        <option>18:00</option><option>18:30</option>
+                    </select>
                     <div class="field-err">Selecione o horário.</div>
                 </div>
             </div>
@@ -1424,7 +1503,19 @@
                 </div>
                 <div class="field" id="cf-time">
                     <label>Horário</label>
-                    <input type="time" id="comboTime">
+                    <select id="comboTime">
+                        <option value="">Selecione</option>
+                        <option>09:00</option><option>09:30</option>
+                        <option>10:00</option><option>10:30</option>
+                        <option>11:00</option><option>11:30</option>
+                        <option>12:00</option><option>12:30</option>
+                        <option>13:00</option><option>13:30</option>
+                        <option>14:00</option><option>14:30</option>
+                        <option>15:00</option><option>15:30</option>
+                        <option>16:00</option><option>16:30</option>
+                        <option>17:00</option><option>17:30</option>
+                        <option>18:00</option><option>18:30</option>
+                    </select>
                     <div class="field-err">Selecione o horário.</div>
                 </div>
             </div>
@@ -1453,17 +1544,36 @@
         if (nav) nav.classList.toggle('scrolled', window.scrollY > 50);
     });
 
+    // ACTIVE NAV LINK
+    var navLinks = document.querySelectorAll('.nav-link[data-section]');
+    if (navLinks.length && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(function(l) { l.classList.remove('active'); });
+                    var link = document.querySelector('.nav-link[data-section="' + entry.target.id + '"]');
+                    if (link) link.classList.add('active');
+                }
+            });
+        }, { threshold: 0.4 });
+        ['sobre', 'servicos'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) io.observe(el);
+        });
+    }
+
     // DADOS DOS SERVIÇOS
     const services = [
-        { name: "Alongamento de Unhas", price: "Aplicação: R$95,00 | Manutenção: R$75,00 | Unha Quebrada: R$5,00", desc: "Ideal para quem deseja unhas instantaneamente longas, resistentes e personalizadas. Permite escolher formato, tamanho e decoração. Durabilidade de 15 a 30 dias." },
-        { name: "Banho de Gel", price: "Aplicação: R$85,00 | Manutenção: R$75,00 | Unha Quebrada: R$5,00", desc: "Ideal para unhas naturais que crescem mas quebram. Proteção, resistência e acabamento sofisticado. Encapsulamentos e decorações disponíveis. Durabilidade de 15 a 30 dias." },
-        { name: "Esmaltação em Gel", price: "R$50,00", desc: "Maior durabilidade que esmaltes tradicionais. Brilho intenso, secagem imediata. Durabilidade de 15 a 20 dias." },
-        { name: "Blindagem", price: "R$50,00", desc: "Proteção para unhas naturais. Aspecto saudável e resistente. Ideal para unhas curtas. Durabilidade de 15 a 20 dias. Não inclui esmaltação em gel." },
-        { name: "Remoção", price: "Consultar", desc: "Remoção segura do gel sem danificar as unhas naturais. Ideal para troca de procedimento ou retirada definitiva." },
-        { name: "Spa dos Pés", price: "R$60,00", desc: "Higienização, remoção de calosidades, lixamento, esfoliação, hidratação, cutilagem e massagem relaxante. Resultado imediato." },
-        { name: "Esmaltação em Gel nos Pés", price: "R$40,00", desc: "Acabamento impecável. Brilho duradouro. Durabilidade de 20 a 30 dias." },
-        { name: "Design de Sobrancelhas", price: "R$25,00", desc: "Design personalizado conforme o formato do rosto. Mais simetria e harmonia facial. Duração de 15 a 30 dias." },
-        { name: "Design com Henna", price: "R$30,00", desc: "Definição e preenchimento das sobrancelhas com henna. Acabamento natural e elegante." }
+        { chip: "Alongamento", name: "Alongamento de Unhas", price: "R$95,00", desc: "Ideal para quem deseja unhas instantaneamente longas, resistentes e personalizadas. Permite escolher formato, tamanho e decoração. Durabilidade de 15 a 30 dias." },
+        { chip: "Banho de Gel", name: "Banho de Gel", price: "R$85,00", desc: "Ideal para unhas naturais que crescem mas quebram. Proteção, resistência e acabamento sofisticado. Durabilidade de 15 a 30 dias." },
+        { chip: "Manutenção", name: "Manutenção", price: "R$75,00", desc: "Manutenção de alongamento ou banho de gel já aplicado. Reposição, ajuste e renovação do serviço anterior." },
+        { chip: "Esmaltação Gel", name: "Esmaltação em Gel", price: "R$50,00", desc: "Maior durabilidade que esmaltes tradicionais. Brilho intenso, secagem imediata. Durabilidade de 15 a 20 dias." },
+        { chip: "Blindagem", name: "Blindagem", price: "R$50,00", desc: "Proteção para unhas naturais. Aspecto saudável e resistente. Ideal para unhas curtas. Durabilidade de 15 a 20 dias." },
+        { chip: "Remoção", name: "Remoção", price: "Consultar", desc: "Remoção segura do gel sem danificar as unhas naturais." },
+        { chip: "Spa dos Pés", name: "Spa dos Pés", price: "R$60,00", desc: "Higienização, remoção de calosidades, esfoliação, hidratação, cutilagem e massagem relaxante." },
+        { chip: "Gel nos Pés", name: "Esmaltação em Gel nos Pés", price: "R$40,00", desc: "Acabamento impecável. Brilho duradouro. Durabilidade de 20 a 30 dias." },
+        { chip: "Sobrancelha", name: "Design de Sobrancelhas", price: "R$25,00", desc: "Design personalizado conforme o formato do rosto. Duração de 15 a 30 dias." },
+        { chip: "Henna", name: "Design com Henna", price: "R$30,00", desc: "Definição e preenchimento das sobrancelhas com henna. Acabamento natural e elegante." }
     ];
 
     // COMBOS (apenas Pés Perfeitos)
@@ -1483,22 +1593,15 @@
         marqueeInner.innerHTML = mc;
     }
 
-    // PREENCHER LISTA DE SERVIÇOS E SELECT
+    // PREENCHER LISTA DE SERVIÇOS E CHECKBOXES
     var servicesList = document.getElementById('servicesList');
-    var serviceSelect = document.getElementById('service');
-    if (servicesList && serviceSelect) {
+    var serviceChecks = document.getElementById('serviceChecks');
+    if (servicesList) {
         servicesList.innerHTML = '';
-        serviceSelect.innerHTML = '<option value="">Selecione um serviço</option>';
-        
         services.forEach(function(s, idx) {
-            var opt = document.createElement('option');
-            opt.value = s.name;
-            opt.textContent = s.name;
-            serviceSelect.appendChild(opt);
-            
+            var numStr = (idx + 1) < 10 ? '0' + (idx + 1) : '' + (idx + 1);
             var item = document.createElement('div');
             item.className = 'service-item reveal';
-            var numStr = (idx + 1) < 10 ? '0' + (idx + 1) : '' + (idx + 1);
             item.innerHTML = '<div class="service-row"><span class="service-num">' + numStr + '</span><div class="service-info"><div class="service-name">' + s.name + '</div><div class="service-price">' + s.price + '</div></div><div class="service-icon">+</div></div><div class="service-desc">' + s.desc + '</div>';
             item.addEventListener('click', (function(el) {
                 return function() {
@@ -1508,6 +1611,22 @@
                 };
             })(item));
             servicesList.appendChild(item);
+        });
+    }
+    if (serviceChecks) {
+        serviceChecks.innerHTML = '';
+        services.forEach(function(s) {
+            var chip = document.createElement('div');
+            chip.className = 'svc-chip';
+            chip.textContent = s.chip;
+            chip.dataset.value = s.name;
+            chip.addEventListener('click', function() {
+                chip.classList.toggle('active');
+                var any = serviceChecks.querySelectorAll('.svc-chip.active').length > 0;
+                var wrap = document.getElementById('f-service');
+                if (wrap) { any ? setOk(wrap) : clearField(wrap); }
+            });
+            serviceChecks.appendChild(chip);
         });
     }
 
@@ -1582,7 +1701,6 @@
     var fTime = document.getElementById('f-time');
     var inpName = document.getElementById('name');
     var inpPhone = document.getElementById('phone');
-    var inpService = document.getElementById('service');
     var inpDate = document.getElementById('date');
     var inpTime = document.getElementById('time');
     var inpObs = document.getElementById('obs');
@@ -1615,15 +1733,18 @@
     if (inpTime && fTime) {
         inpTime.addEventListener('change', function() { inpTime.value ? setOk(fTime) : clearField(fTime); });
     }
-    if (inpService && fService) {
-        inpService.addEventListener('change', function() { inpService.value ? setOk(fService) : clearField(fService); });
+
+    function getSelectedServices() {
+        var active = document.querySelectorAll('#serviceChecks .svc-chip.active');
+        return Array.from(active).map(function(c) { return c.dataset.value; });
     }
 
     function validateMainForm() {
         var ok = true;
         if (!inpName.value.trim()) { setErr(fName, 'Informe seu nome completo.'); ok = false; } else { setOk(fName); }
         if (!inpPhone.value.trim()) { setErr(fPhone, 'Informe um telefone válido.'); ok = false; } else { setOk(fPhone); }
-        if (!inpService.value) { setErr(fService, 'Selecione um serviço.'); ok = false; } else { setOk(fService); }
+        var selected = getSelectedServices();
+        if (selected.length === 0) { setErr(fService, 'Selecione ao menos um serviço.'); ok = false; } else { setOk(fService); }
         if (!inpDate.value) { setErr(fDate, 'Selecione a data.'); ok = false; } else { setOk(fDate); }
         if (!inpTime.value) { setErr(fTime, 'Selecione o horário.'); ok = false; } else { setOk(fTime); }
         return ok;
@@ -1635,21 +1756,29 @@
     document.getElementById('appointmentForm').addEventListener('submit', function(e) {
         e.preventDefault();
         if (!validateMainForm()) return;
+        var selected = getSelectedServices();
         var data = {
             name: inpName.value.trim(),
             phone: inpPhone.value.trim(),
-            service: inpService.value,
+            service: selected.join(', '),
             date: inpDate.value,
             time: inpTime.value,
             obs: inpObs.value.trim() || '--'
         };
-        var msg = 'Olá! Gostaria de agendar um atendimento:\n\n👤 Nome: ' + data.name + '\n📞 Tel: ' + data.phone + '\n💅 Serviço: ' + data.service + '\n📅 Data: ' + formatDate(data.date) + ' às ' + data.time + '\n📝 Obs: ' + data.obs + '\n\nAguardo confirmação.';
+        var serviceLine = selected.length > 1
+            ? selected.map(function(s, i) { return '\n   ' + (i+1) + '. ' + s; }).join('')
+            : selected[0];
+        var msg = 'Olá! Gostaria de agendar um atendimento:\n\n👤 Nome: ' + data.name + '\n📞 Tel: ' + data.phone + '\n💅 Serviço(s): ' + serviceLine + '\n📅 Data: ' + formatDate(data.date) + ' às ' + data.time + '\n📝 Obs: ' + data.obs + '\n\nAguardo confirmação.';
         sendWhatsApp(msg);
         pendingData = data;
         if (confirmTicket) {
-            confirmTicket.innerHTML = '<div class="ticket-row"><span class="t-label">Nome</span><span class="t-val">' + data.name + '</span></div><div class="ticket-row"><span class="t-label">Serviço</span><span class="t-val">' + data.service + '</span></div><div class="ticket-row"><span class="t-label">Data</span><span class="t-val">' + formatDate(data.date) + '</span></div><div class="ticket-row"><span class="t-label">Horário</span><span class="t-val">' + data.time + '</span></div><div class="ticket-row"><span class="t-label">Telefone</span><span class="t-val">' + data.phone + '</span></div>';
+            confirmTicket.innerHTML = '<div class="ticket-row"><span class="t-label">Nome</span><span class="t-val">' + data.name + '</span></div><div class="ticket-row"><span class="t-label">Serviço(s)</span><span class="t-val">' + selected.join('<br>') + '</span></div><div class="ticket-row"><span class="t-label">Data</span><span class="t-val">' + formatDate(data.date) + '</span></div><div class="ticket-row"><span class="t-label">Horário</span><span class="t-val">' + data.time + '</span></div><div class="ticket-row"><span class="t-label">Telefone</span><span class="t-val">' + data.phone + '</span></div>';
         }
         openModal('modalConfirm');
+        // RESET FORM
+        document.getElementById('appointmentForm').reset();
+        document.querySelectorAll('#serviceChecks .svc-chip.active').forEach(function(c) { c.classList.remove('active'); });
+        [fName, fPhone, fService, fDate, fTime].forEach(clearField);
     });
 
     document.getElementById('btnAddCal').addEventListener('click', function() {
